@@ -29,24 +29,39 @@
     ];
     
     var loadScript = function() {
-      var script = document.createElement('script');
-      script.src = cdnUrls[retryCount];
-      script.crossOrigin = 'anonymous';
-      
-      script.onload = extractAndSend;
-      script.onerror = function() {
+      // Use fetch + eval instead of script injection for better mobile compatibility
+      fetch(cdnUrls[retryCount], {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'default'
+      })
+      .then(function(response) {
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        return response.text();
+      })
+      .then(function(code) {
+        // Evaluate the script in global context
+        (1, eval)(code);
+        
+        // Verify it loaded
+        if (typeof window.Readability === 'undefined') {
+          throw new Error('Readability not defined after eval');
+        }
+        extractAndSend();
+      })
+      .catch(function(error) {
+        console.error('Failed to load from ' + cdnUrls[retryCount], error);
         retryCount++;
         if (retryCount < cdnUrls.length) {
-          console.log('Retrying with alternate CDN (attempt ' + (retryCount + 1) + ')...');
+          console.log('Retrying with alternate source (attempt ' + (retryCount + 1) + ')...');
           setTimeout(loadScript, 500);
         } else {
           if (loadingDiv.parentNode) {
             document.body.removeChild(loadingDiv);
           }
-          alert('❌ Failed to load article reader.\n\nPossible issues:\n• Poor internet connection\n• CDN blocked by network\n• Browser security settings\n\nPlease check your connection and try again.');
+          alert('❌ Failed to load article reader.\n\nAll sources failed. Please:\n• Check your internet connection\n• Try again in a moment\n• Make sure JavaScript is enabled\n\nError: ' + error.message);
         }
-      };
-      document.head.appendChild(script);
+      });
     };
     
     loadScript();
