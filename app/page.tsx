@@ -54,7 +54,8 @@ export default function Home() {
     } catch (error) {
       console.error('Bookmarklet test error:', error);
       console.error('Code that failed:', decodeURIComponent(bookmarkletCode.replace(/^javascript:/, '')));
-      alert('Error testing bookmarklet: ' + error.message + '\n\nCheck the browser console for details.');
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      alert('Error testing bookmarklet: ' + errorMessage + '\n\nCheck the browser console for details.');
     }
   };
 

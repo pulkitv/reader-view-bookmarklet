@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate text length (approximate word count)
-    const textLength = article.textContent.trim().split(/\s+/).length;
+    const textLength = article.textContent?.trim().split(/\s+/).length || 0;
 
     return NextResponse.json({
       success: true,
