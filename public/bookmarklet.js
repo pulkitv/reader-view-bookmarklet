@@ -1,8 +1,16 @@
 (function() {
   'use strict';
   
-  // Configuration
-  var READER_APP_URL = 'http://localhost:3000/reader';
+  // Configuration - Update this URL to your deployed app URL
+  // For local testing on mobile, replace with your computer's IP (e.g., 'http://192.168.1.2:3000/reader')
+  // For production, use your deployed URL (e.g., 'https://your-app.vercel.app/reader')
+  var READER_APP_URL = 'https://reader-view-bookmarklet.vercel.app/reader';
+  
+  // Detect if we're on mobile and using localhost (which won't work)
+  if (/Mobi|Android/i.test(navigator.userAgent) && READER_APP_URL.includes('localhost')) {
+    alert('⚠️ Configuration needed!\n\nThis bookmarklet is configured for localhost, which doesn\'t work on mobile.\n\nPlease:\n1. Deploy the app to Vercel/Netlify, OR\n2. Update the bookmarklet URL to use your computer\'s local IP address');
+    return;
+  }
   
   // Show loading indicator
   var loadingDiv = document.createElement('div');
@@ -13,16 +21,36 @@
   
   // Load Readability if not already loaded
   if (typeof window.Readability === 'undefined') {
-    var script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/@mozilla/readability@0.5.0/Readability.min.js';
-    script.onload = extractAndSend;
-    script.onerror = function() {
-      if (loadingDiv.parentNode) {
-        document.body.removeChild(loadingDiv);
-      }
-      alert('Failed to load Readability library. Please check your internet connection.');
+    var retryCount = 0;
+    var maxRetries = 2;
+    var cdnUrls = [
+      'https://unpkg.com/@mozilla/readability@0.5.0/Readability.js',
+      'https://cdn.jsdelivr.net/npm/@mozilla/readability@0.5.0/Readability.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/readability/0.5.0/Readability.min.js'
+    ];
+    
+    var loadScript = function() {
+      var script = document.createElement('script');
+      script.src = cdnUrls[retryCount];
+      script.crossOrigin = 'anonymous';
+      
+      script.onload = extractAndSend;
+      script.onerror = function() {
+        retryCount++;
+        if (retryCount < cdnUrls.length) {
+          console.log('Retrying with alternate CDN...');
+          setTimeout(loadScript, 500);
+        } else {
+          if (loadingDiv.parentNode) {
+            document.body.removeChild(loadingDiv);
+          }
+          alert('❌ Failed to load article reader.\n\nPossible issues:\n• Poor internet connection\n• CDN blocked by network\n• Browser security settings\n\nPlease check your connection and try again.');
+        }
+      };
+      document.head.appendChild(script);
     };
-    document.head.appendChild(script);
+    
+    loadScript();
   } else {
     extractAndSend();
   }
