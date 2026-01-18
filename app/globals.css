@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
   --background: #ffffff;
@@ -24,3 +25,246 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Custom reader-view styles */
+.reader-content {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: #1a1a1a !important;
+  background-color: transparent !important;
+}
+
+.dark .reader-content {
+  color: #e5e5e5 !important;
+  background-color: transparent !important;
+}
+
+/* Force text color on all children */
+.reader-content,
+.reader-content * {
+  color: #1a1a1a !important;
+  background-color: transparent !important;
+}
+
+.dark .reader-content,
+.dark .reader-content * {
+  color: #e5e5e5 !important;
+  background-color: transparent !important;
+}
+
+/* Allow links to have their own color */
+.reader-content a,
+.reader-content a * {
+  color: #2563eb !important;
+}
+
+.dark .reader-content a,
+.dark .reader-content a * {
+  color: #60a5fa !important;
+}
+
+.reader-content > * {
+  margin-bottom: 1.25em;
+}
+
+.reader-content h1,
+.reader-content h2,
+.reader-content h3,
+.reader-content h4,
+.reader-content h5,
+.reader-content h6 {
+  font-weight: 700;
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+  line-height: 1.3;
+  color: #0f172a !important;
+}
+
+.dark .reader-content h1,
+.dark .reader-content h2,
+.dark .reader-content h3,
+.dark .reader-content h4,
+.dark .reader-content h5,
+.dark .reader-content h6 {
+  color: #f1f5f9 !important;
+}
+
+.reader-content h1 {
+  font-size: 2.25em;
+}
+
+.reader-content h2 {
+  font-size: 1.875em;
+}
+
+.reader-content h3 {
+  font-size: 1.5em;
+}
+
+.reader-content h4 {
+  font-size: 1.25em;
+}
+
+.reader-content p {
+  margin-bottom: 1.5em;
+  text-align: justify;
+  color: inherit !important;
+}
+
+.reader-content strong,
+.reader-content b {
+  font-weight: 600;
+  color: #0f172a !important;
+}
+
+.dark .reader-content strong,
+.dark .reader-content b {
+  color: #f1f5f9 !important;
+}
+
+.reader-content em,
+.reader-content i {
+  font-style: italic;
+  color: inherit !important;
+}
+
+.reader-content img {
+  max-width: 100%;
+  height: auto;
+  margin: 2em auto;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.dark .reader-content img {
+  box-shadow: 0 4px 6px -1px rgb(255 255 255 / 0.1);
+}
+
+.reader-content figure {
+  margin: 2em 0;
+}
+
+.reader-content figcaption {
+  text-align: center;
+  font-size: 0.875em;
+  color: #666;
+  margin-top: 0.5em;
+  font-style: italic;
+}
+
+.dark .reader-content figcaption {
+  color: #999;
+}
+
+.reader-content blockquote {
+  border-left: 4px solid #e5e5e5;
+  padding-left: 1.5em;
+  margin: 2em 0;
+  font-style: italic;
+  color: #555;
+}
+
+.dark .reader-content blockquote {
+  border-left-color: #444;
+  color: #aaa;
+}
+
+.reader-content a {
+  color: #2563eb;
+  text-decoration: underline;
+  text-decoration-color: rgba(37, 99, 235, 0.3);
+  text-underline-offset: 2px;
+  transition: text-decoration-color 0.2s;
+}
+
+.reader-content a:hover {
+  text-decoration-color: rgba(37, 99, 235, 1);
+}
+
+.dark .reader-content a {
+  color: #60a5fa;
+  text-decoration-color: rgba(96, 165, 250, 0.3);
+}
+
+.dark .reader-content a:hover {
+  text-decoration-color: rgba(96, 165, 250, 1);
+}
+
+.reader-content ul,
+.reader-content ol {
+  margin: 1.5em 0;
+  padding-left: 2em;
+}
+
+.reader-content li {
+  margin-bottom: 0.5em;
+}
+
+.reader-content code {
+  background-color: #f5f5f5;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.dark .reader-content code {
+  background-color: #2a2a2a;
+}
+
+.reader-content pre {
+  background-color: #f5f5f5;
+  padding: 1.25em;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 2em 0;
+}
+
+.dark .reader-content pre {
+  background-color: #2a2a2a;
+}
+
+.reader-content pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+.reader-content hr {
+  border: none;
+  border-top: 2px solid #e5e5e5;
+  margin: 3em 0;
+}
+
+.dark .reader-content hr {
+  border-top-color: #333;
+}
+
+.reader-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2em 0;
+}
+
+.reader-content th,
+.reader-content td {
+  border: 1px solid #e5e5e5;
+  padding: 0.75em;
+  text-align: left;
+}
+
+.dark .reader-content th,
+.dark .reader-content td {
+  border-color: #333;
+}
+
+.reader-content th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+
+.dark .reader-content th {
+  background-color: #2a2a2a;
+}
+
