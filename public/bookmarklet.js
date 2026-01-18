@@ -22,11 +22,10 @@
   // Load Readability if not already loaded
   if (typeof window.Readability === 'undefined') {
     var retryCount = 0;
-    var maxRetries = 2;
     var cdnUrls = [
+      'https://reader-view-bookmarklet.vercel.app/Readability.js',
       'https://unpkg.com/@mozilla/readability@0.5.0/Readability.js',
-      'https://cdn.jsdelivr.net/npm/@mozilla/readability@0.5.0/Readability.min.js',
-      'https://cdnjs.cloudflare.com/ajax/libs/readability/0.5.0/Readability.min.js'
+      'https://cdn.jsdelivr.net/npm/@mozilla/readability@0.5.0/Readability.min.js'
     ];
     
     var loadScript = function() {
@@ -38,7 +37,7 @@
       script.onerror = function() {
         retryCount++;
         if (retryCount < cdnUrls.length) {
-          console.log('Retrying with alternate CDN...');
+          console.log('Retrying with alternate CDN (attempt ' + (retryCount + 1) + ')...');
           setTimeout(loadScript, 500);
         } else {
           if (loadingDiv.parentNode) {
